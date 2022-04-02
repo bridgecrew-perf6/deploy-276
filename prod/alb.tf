@@ -88,12 +88,13 @@ module "alb" {
 	load_balancer_type = "application"
 
 	vpc_id = aws_default_vpc.default.id
-	subnets = [aws_subnet.public.id, aws_subnet.public.id]
+	subnets = [aws_subnet.public1.id, aws_subnet.public2.id]
 	security_groups = [
 		aws_security_group.alb-inbound.id
 	]
 	access_logs = {
 		bucket = aws_s3_bucket.alb-access-logs.bucket
+		enabled = false # TODO
 	}
 
 	http_tcp_listeners = [
@@ -101,6 +102,35 @@ module "alb" {
 			port = 80
 			protocol = "HTTP"
 			target_group_idx = 0
+			action_type = "redirect"
+			redirect = {
+				port = "443"
+				protocol = "HTTPS"
+				status_code = "HTTP_301"
+			}
+		}
+	]
+
+	https_listeners = [
+		{
+			port = 443
+			protocol = "HTTPS"
+			certificate_arn = aws_acm_certificate.cert.arn
+			target_group_idx = 0
+		}
+	]
+
+	https_listener_rules = [
+		{
+			https_listener_index = 0
+			priority = 100
+			actions = [{
+				type = "forward"
+				target_group_arn = module.alb.target_group_arns[0]
+			}]
+			conditions =[{
+				host_headers = ["hidiscuss.ga"]
+			}]
 		}
 	]
 

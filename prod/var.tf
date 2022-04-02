@@ -3,9 +3,13 @@ variable "aws_region" {
 }
 
 variable "s3_bucket_alb_logging" {
-	default = "alb-access-logs"
+	default = "alb-logging-casptone"
 }
 
 variable "aws_account_id" {
-	//default = TBD
+	default = 075730933478
+}
+
+variable "domain" {
+	default = "hidiscuss.ga"
 }

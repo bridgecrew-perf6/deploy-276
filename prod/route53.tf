@@ -20,3 +20,15 @@ resource "aws_route53_record" "cert" {
   type            = each.value.type
   zone_id         = aws_route53_zone.default.zone_id
 }
+
+resource "aws_route53_record" "elb" {
+  name = "${var.domain}"
+  type = "A"
+  alias {
+    name = module.alb.lb_dns_name
+    zone_id = module.alb.lb_zone_id
+    evaluate_target_health = true
+  }
+
+  zone_id = aws_route53_zone.default.zone_id  
+}
