@@ -131,15 +131,35 @@ module "alb" {
 			conditions =[{
 				host_headers = ["hidiscuss.ga"]
 			}]
+		},
+		{
+			https_listener_index = 0
+			priority = 200
+
+			actions = [{
+				type = "forward"
+				target_group_arn = module.alb.target_group_arns[1]
+			}]
+
+			conditions = [{
+				path_patterns = ["/api/*"]
+				host_headers = ["hidiscuss.ga"]
+			}]
 		}
 	]
 
 	target_groups = [
 		{
-		name_prefix      = "pref-"
-		backend_protocol = "HTTP"
-		backend_port     = 80 
-		target_type = "ip"
+			name_prefix = "fe-"
+			backend_protocol = "HTTP"
+			backend_port     = 3000 
+			target_type = "ip"
+		},
+		{
+			name_prefix = "be-s-"
+			backend_protocol = "HTTP"
+			backend_port = 8080
+			target_type = "ip"
 		}
 	]
 
