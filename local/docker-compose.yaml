@@ -41,3 +41,13 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=hidiscuss
+  api-generator:
+    build:
+      context: ./api-generator
+    environment:
+     - SWAGGER_API_URL=http://backend:8080/v2/api-docs
+     - BUILD_DIR=/app/dist
+    volumes:
+      - ./dist:/app/dist
+    depends_on:
+      - backend
