@@ -3,6 +3,7 @@ services:
 
   backend:
     image: 075730933478.dkr.ecr.ap-northeast-2.amazonaws.com/backend-spring:latest
+    pull_policy: always
     ports:
       - "8080:8080"
     environment:

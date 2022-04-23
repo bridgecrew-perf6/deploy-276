@@ -5,7 +5,7 @@
 
 ### Deploy
 - `docker-compose up`
-
+- pull latest image from docker hub : uncomment `pull_policy: always` in `docker-compose.yaml`
 ### Destroy
 - `docker-compose down`
 
