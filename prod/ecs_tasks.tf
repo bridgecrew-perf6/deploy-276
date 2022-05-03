@@ -15,6 +15,24 @@ data "aws_iam_policy_document" "ecs_task_execution_role" {
 resource "aws_iam_role" "ecs_task_execution_role" {
   name               = "ecs-staging-execution-role"
   assume_role_policy = data.aws_iam_policy_document.ecs_task_execution_role.json
+  inline_policy {
+    name ="ecs-task-logs"
+    policy = jsonencode({
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Sid": "",
+          "Effect": "Allow",
+          "Action": [
+            "logs:CreateLogGroup",
+            "logs:CreateLogStream",
+            "logs:PutLogEvents"
+          ],
+          "Resource": "arn:aws:logs:*:*:*"
+        }
+      ]
+    })
+  }
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_task_execution_role" {
@@ -32,7 +50,7 @@ resource "aws_ecs_task_definition" "frontend" {
   container_definitions    = jsonencode([
 	{
 	  "name": "frontend",
-	  "image": "075730933478.dkr.ecr.ap-northeast-2.amazonaws.com/frontend:latest",
+	  "image": "075730933478.dkr.ecr.ap-northeast-2.amazonaws.com/frontend:test",
 	  "cpu": 256,
 	  "memory": 512,
 	  "essential": true,
@@ -42,7 +60,7 @@ resource "aws_ecs_task_definition" "frontend" {
 		  "hostPort": 3000,
 		  "protocol": "tcp"
 		}
-	  ]
+	  ],
 	}
   ])
 }
@@ -56,17 +74,26 @@ resource "aws_ecs_task_definition" "backend_spring" {
   container_definitions    = jsonencode([
 	{
 	  "name": "backend-spring",
-	  "image": "075730933478.dkr.ecr.ap-northeast-2.amazonaws.com/backend-spring:latest",
+	  "image": "075730933478.dkr.ecr.ap-northeast-2.amazonaws.com/backend-spring:2b11969",
 	  "cpu": 256,
 	  "memory": 512,
 	  "essential": true,
+    "environment": var.backend_spring_env
 	  "portMappings": [
 		{
 		  "containerPort": 8080,
 		  "hostPort": 8080,
 		  "protocol": "tcp"
 		}
-	  ]
+	  ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "fargate-group"
+        "awslogs-region": "ap-northeast-2"
+        "awslogs-stream-prefix": "backend-spring"
+      }
+    }
 	}
   ])
 }

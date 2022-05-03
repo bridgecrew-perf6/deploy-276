@@ -1,5 +1,4 @@
 
-/*
 resource "aws_ecs_service" "frontend" {
   name            = "frontend"
   cluster         = aws_ecs_cluster.default.id
@@ -43,4 +42,3 @@ resource "aws_ecs_service" "backend-spring" {
 
   depends_on = [module.alb, aws_iam_role_policy_attachment.ecs_task_execution_role]
 }
-*/

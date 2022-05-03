@@ -1,5 +1,10 @@
 resource "aws_ecs_cluster" "default" {
   name = "service-ecs-cluster"
+
+  setting {
+	name ="containerInsights"
+	value = "enabled"
+  }
 }
 
 

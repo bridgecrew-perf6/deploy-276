@@ -1,5 +1,7 @@
 data "aws_iam_policy_document" "allow_access_alb_accesslogs" {
 	statement {
+		sid = "AWSConsoleStmt"
+		effect = "Allow"
 		principals {
 		  type = "AWS"
 		  identifiers = ["arn:aws:iam::600734575887:root"]
@@ -13,6 +15,8 @@ data "aws_iam_policy_document" "allow_access_alb_accesslogs" {
 		]
 	}
   statement {
+	sid = "AWSLogDeliveryWrite"
+	effect = "Allow"
     actions   = ["s3:PutObject"]
 	resources = ["arn:aws:s3:::${var.s3_bucket_alb_logging}/AWSLogs/${var.aws_account_id}/*",]
     condition {
@@ -28,6 +32,8 @@ data "aws_iam_policy_document" "allow_access_alb_accesslogs" {
   }
 
   statement {
+	sid ="AWSLogDeliveryAclCheck"
+	effect = "Allow"
     actions   = ["s3:GetBucketAcl"]
     resources = ["arn:aws:s3:::${var.s3_bucket_alb_logging}"]
 
@@ -94,7 +100,7 @@ module "alb" {
 	]
 	access_logs = {
 		bucket = aws_s3_bucket.alb-access-logs.bucket
-		enabled = false # TODO
+		enabled = true # TODO
 	}
 
 	http_tcp_listeners = [
@@ -124,25 +130,25 @@ module "alb" {
 		{
 			https_listener_index = 0
 			priority = 100
+
 			actions = [{
 				type = "forward"
-				target_group_arn = module.alb.target_group_arns[0]
+				target_group_index = 1
 			}]
-			conditions =[{
+
+			conditions = [{
+				path_patterns = ["/api/*"]
 				host_headers = ["hidiscuss.ga"]
 			}]
 		},
 		{
 			https_listener_index = 0
 			priority = 200
-
 			actions = [{
 				type = "forward"
-				target_group_arn = module.alb.target_group_arns[1]
+				target_group_index = 0
 			}]
-
-			conditions = [{
-				path_patterns = ["/api/*"]
+			conditions =[{
 				host_headers = ["hidiscuss.ga"]
 			}]
 		}
@@ -160,6 +166,15 @@ module "alb" {
 			backend_protocol = "HTTP"
 			backend_port = 8080
 			target_type = "ip"
+			health_check = {
+				port = 8080
+				protocol = "HTTP"
+				path = "/login"
+				interval = 240
+				timeout = 120
+				healthy_threshold = 3
+				unhealthy_threshold = 3
+			}
 		}
 	]
 
