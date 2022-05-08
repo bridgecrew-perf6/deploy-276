@@ -50,7 +50,7 @@ resource "aws_ecs_task_definition" "frontend" {
   container_definitions    = jsonencode([
 	{
 	  "name": "frontend",
-	  "image": "075730933478.dkr.ecr.ap-northeast-2.amazonaws.com/frontend:test",
+	  "image": "075730933478.dkr.ecr.ap-northeast-2.amazonaws.com/frontend:latest",
 	  "cpu": 256,
 	  "memory": 512,
 	  "essential": true,
@@ -74,7 +74,7 @@ resource "aws_ecs_task_definition" "backend_spring" {
   container_definitions    = jsonencode([
 	{
 	  "name": "backend-spring",
-	  "image": "075730933478.dkr.ecr.ap-northeast-2.amazonaws.com/backend-spring:2b11969",
+	  "image": "075730933478.dkr.ecr.ap-northeast-2.amazonaws.com/backend-spring:1e24a63",
 	  "cpu": 256,
 	  "memory": 512,
 	  "essential": true,
