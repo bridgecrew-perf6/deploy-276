@@ -2,12 +2,12 @@ version: "3.9"  # optional since v1.27.0
 services:
 
   backend:
-    image: 075730933478.dkr.ecr.ap-northeast-2.amazonaws.com/backend-spring:3c930fb
+    image: 075730933478.dkr.ecr.ap-northeast-2.amazonaws.com/backend-spring:b1113c2
     pull_policy: always
     ports:
       - "8080:8080"
     environment:
-      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_PROFILES_ACTIVE=dev
       - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/hidiscuss?autoReconnect=true
       - SPRING_DATASOURCE_HIKARI_USERNAME=root
       - SPRING_DATASOURCE_HIKARI_PASSWORD=root
