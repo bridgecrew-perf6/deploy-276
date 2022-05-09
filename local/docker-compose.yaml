@@ -2,7 +2,7 @@ version: "3.9"  # optional since v1.27.0
 services:
 
   backend:
-    image: 075730933478.dkr.ecr.ap-northeast-2.amazonaws.com/backend-spring:1e24a63
+    image: 075730933478.dkr.ecr.ap-northeast-2.amazonaws.com/backend-spring:3c930fb
     pull_policy: always
     ports:
       - "8080:8080"
@@ -24,7 +24,7 @@ services:
   #  environment:
   #    - WEBSOCKET_PORT=8080
   frontend:
-    image: 075730933478.dkr.ecr.ap-northeast-2.amazonaws.com/frontend:latest
+    image: 075730933478.dkr.ecr.ap-northeast-2.amazonaws.com/frontend:7a5d697
   web:
     image: nginx:1.21-alpine
     ports:
