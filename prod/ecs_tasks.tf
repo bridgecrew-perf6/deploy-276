@@ -50,7 +50,7 @@ resource "aws_ecs_task_definition" "frontend" {
   container_definitions    = jsonencode([
 	{
 	  "name": "frontend",
-	  "image": "075730933478.dkr.ecr.ap-northeast-2.amazonaws.com/frontend:7a5d697",
+	  "image": "075730933478.dkr.ecr.ap-northeast-2.amazonaws.com/frontend:2154fcc",
 	  "cpu": 256,
 	  "memory": 512,
 	  "essential": true,
@@ -68,15 +68,15 @@ resource "aws_ecs_task_definition" "backend_spring" {
   family                   = "backend_spring"
   network_mode             = "awsvpc"
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
-  cpu                      = 256
-  memory                   = 512
+  cpu                      = 512
+  memory                   = 1024
   requires_compatibilities = ["FARGATE"]
   container_definitions    = jsonencode([
 	{
 	  "name": "backend-spring",
-	  "image": "075730933478.dkr.ecr.ap-northeast-2.amazonaws.com/backend-spring:b1113c2",
-	  "cpu": 256,
-	  "memory": 512,
+	  "image": "075730933478.dkr.ecr.ap-northeast-2.amazonaws.com/backend-spring:b79eb27",
+	  "cpu": 512,
+	  "memory": 1024,
 	  "essential": true,
     "environment": var.backend_spring_env
 	  "portMappings": [
