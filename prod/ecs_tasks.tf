@@ -97,3 +97,42 @@ resource "aws_ecs_task_definition" "backend_spring" {
 	}
   ])
 }
+
+resource "aws_ecs_task_definition" "backend_websocket" {
+  family                   = "backend_websocket"
+  network_mode             = "awsvpc"
+  execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
+  cpu                      = 512
+  memory                   = 1024
+  requires_compatibilities = ["FARGATE"]
+  container_definitions    = jsonencode([
+	{
+	  "name": "backend-websocket",
+	  "image": "075730933478.dkr.ecr.ap-northeast-2.amazonaws.com/backend-websocket:test2",
+	  "cpu": 512,
+	  "memory": 1024,
+	  "essential": true,
+    "environment": var.backend_websocket_env
+	  "portMappings": [
+		{
+		  "containerPort": 3001,
+		  "hostPort": 3001,
+		  "protocol": "tcp"
+		},
+    {
+      "containerPort": 4000,
+      "hostPort": 4000,
+      "protocol": "tcp"
+    }
+	  ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "fargate-group"
+        "awslogs-region": "ap-northeast-2"
+        "awslogs-stream-prefix": "backend-websocket"
+      }
+    }
+	}
+  ])
+}

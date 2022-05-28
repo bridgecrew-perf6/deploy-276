@@ -42,3 +42,26 @@ resource "aws_ecs_service" "backend-spring" {
 
   depends_on = [module.alb, aws_iam_role_policy_attachment.ecs_task_execution_role]
 }
+
+
+resource "aws_ecs_service" "backend-websocket" {
+  name            = "backend-websocket"
+  cluster         = aws_ecs_cluster.default.id
+  task_definition = aws_ecs_task_definition.backend_websocket.arn
+  desired_count   = 1
+  launch_type     = "FARGATE"
+
+  load_balancer {
+    target_group_arn = module.alb.target_group_arns[2]
+    container_name = "backend-websocket"
+    container_port = 3001
+  }
+
+  network_configuration {
+    subnets = [aws_subnet.public1.id, aws_subnet.public2.id, aws_subnet.private.id]
+    security_groups = [aws_security_group.ecs-service-default.id]
+    assign_public_ip = true
+  }
+
+  depends_on = [module.alb, aws_iam_role_policy_attachment.ecs_task_execution_role]
+}

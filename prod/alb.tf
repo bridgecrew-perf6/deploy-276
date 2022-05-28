@@ -143,6 +143,18 @@ module "alb" {
 		},
 		{
 			https_listener_index = 0
+			priority = 101
+			actions = [{
+				type = "forward"
+				target_group_index = 2
+			}]
+			conditions =[{
+				host_headers = ["hidiscuss.ga"]
+				path_patterns = ["/socket/*"]
+			}]
+		},
+		{
+			https_listener_index = 0
 			priority = 200
 			actions = [{
 				type = "forward"
@@ -174,6 +186,18 @@ module "alb" {
 				timeout = 120
 				healthy_threshold = 3
 				unhealthy_threshold = 3
+			}
+		},
+		{
+			name_prefix = "be-ws-"
+			backend_protocol = "HTTP"
+			backend_port = 3001
+			target_type = "ip"
+			health_check = {
+				port = 3001
+				protocol = "HTTP"
+				path = "/socket/"
+				matcher = "200,201,426"
 			}
 		}
 	]
