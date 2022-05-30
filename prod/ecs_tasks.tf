@@ -50,7 +50,7 @@ resource "aws_ecs_task_definition" "frontend" {
   container_definitions    = jsonencode([
 	{
 	  "name": "frontend",
-	  "image": "075730933478.dkr.ecr.ap-northeast-2.amazonaws.com/frontend:2154fcc",
+	  "image": "075730933478.dkr.ecr.ap-northeast-2.amazonaws.com/frontend:6e1d0a2",
 	  "cpu": 256,
 	  "memory": 512,
 	  "essential": true,
@@ -74,7 +74,7 @@ resource "aws_ecs_task_definition" "backend_spring" {
   container_definitions    = jsonencode([
 	{
 	  "name": "backend-spring",
-	  "image": "075730933478.dkr.ecr.ap-northeast-2.amazonaws.com/backend-spring:b79eb27",
+	  "image": "075730933478.dkr.ecr.ap-northeast-2.amazonaws.com/backend-spring:454ab05",
 	  "cpu": 512,
 	  "memory": 1024,
 	  "essential": true,
@@ -108,7 +108,7 @@ resource "aws_ecs_task_definition" "backend_websocket" {
   container_definitions    = jsonencode([
 	{
 	  "name": "backend-websocket",
-	  "image": "075730933478.dkr.ecr.ap-northeast-2.amazonaws.com/backend-websocket:test2",
+	  "image": "075730933478.dkr.ecr.ap-northeast-2.amazonaws.com/backend-websocket:790f824",
 	  "cpu": 512,
 	  "memory": 1024,
 	  "essential": true,
