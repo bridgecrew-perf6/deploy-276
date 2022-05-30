@@ -74,7 +74,7 @@ resource "aws_ecs_task_definition" "backend_spring" {
   container_definitions    = jsonencode([
 	{
 	  "name": "backend-spring",
-	  "image": "075730933478.dkr.ecr.ap-northeast-2.amazonaws.com/backend-spring:454ab05",
+	  "image": "075730933478.dkr.ecr.ap-northeast-2.amazonaws.com/backend-spring:9112dc1",
 	  "cpu": 512,
 	  "memory": 1024,
 	  "essential": true,
