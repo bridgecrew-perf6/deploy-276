@@ -186,6 +186,7 @@ module "alb" {
 				timeout = 120
 				healthy_threshold = 3
 				unhealthy_threshold = 3
+				matcher = "200,201,426,404"
 			}
 		},
 		{

@@ -25,7 +25,7 @@ resource "aws_ecs_service" "backend-spring" {
   name            = "backend-spring"
   cluster         = aws_ecs_cluster.default.id
   task_definition = aws_ecs_task_definition.backend_spring.arn
-  desired_count   = 1
+  desired_count   =  1
   launch_type     = "FARGATE"
 
   load_balancer {
