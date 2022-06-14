@@ -2,7 +2,7 @@ version: "3.9"  # optional since v1.27.0
 services:
 
   backend:
-    image: 075730933478.dkr.ecr.ap-northeast-2.amazonaws.com/backend-spring:9112dc1
+    image: 075730933478.dkr.ecr.ap-northeast-2.amazonaws.com/backend-spring:aa1b862
     ports:
       - "8080:8080"
     environment:
@@ -32,7 +32,7 @@ services:
      - DATABASE_NAME=hidiscuss
      - JWT_SECRET=token-secret-key-for-hyun-backend-spring-boot-login-aabbccddeeefffffeeffeffef
   frontend:
-    image: 075730933478.dkr.ecr.ap-northeast-2.amazonaws.com/frontend:6e1d0a2
+    image: 075730933478.dkr.ecr.ap-northeast-2.amazonaws.com/frontend:8f801c8
   web:
     image: nginx:1.21-alpine
     ports:
